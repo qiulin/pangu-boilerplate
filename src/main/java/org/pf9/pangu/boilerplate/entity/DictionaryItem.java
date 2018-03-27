@@ -10,38 +10,38 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name="pg_adm_dictionary_item")
+@Table(name = "pg_adm_dictionary_item")
 
-public class DictionaryItem extends AbstractAuditingEntity implements Serializable{
+public class DictionaryItem extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     private Long id;
 
-    @Column(name="dic_id")
+    @Column(name = "dic_id")
     private Long dicId;
 
-    @Column(name="assoc_id")
+    @Column(name = "assoc_id")
     private Long assocId;
 
-    //编码
+    @Column(name = "code")
     private String code;
 
-    @Column(name="py_code")
+    @Column(name = "py_code")
     private String pyCode;
 
     private String name;
 
     private String description;
 
-    @Column(name="is_disabled")
+    @Column(name = "is_disabled")
     private boolean isDisabled;
 
-    @Column(name="is_locked")
+    @Column(name = "is_locked")
     private boolean isLocked;
 
-    @Column(name="is_deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted;
 
     public String getPyCode() {
@@ -127,6 +127,7 @@ public class DictionaryItem extends AbstractAuditingEntity implements Serializab
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
