@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.pf9.pangu.boilerplate.mapper.RoleMapper">
+
+    <select id="getRoleListByUser" parameterType="Long" resultMap="roleMap">
+        SELECT r.*
+        FROM he_adm_user_role_assoc ac
+            INNER JOIN he_adm_role r ON r.code = ac.role_code
+        WHERE ac.user_id = #{userId}
+    </select>
+
+    <resultMap id="roleMap" type="org.pf9.pangu.boilerplate.entity.Role">
+        <id column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+    </resultMap>
+
+</mapper>

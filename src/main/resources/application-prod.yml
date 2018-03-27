@@ -1,0 +1,92 @@
+
+server:
+    port: 9090
+    context-path:
+
+logging:
+    level:
+        org.pf9: INFO
+        org.mybatis: INFO
+
+spring:
+    application:
+        name: panguEngine
+    thymeleaf:
+        cache: false
+        prefix: /templates/
+        suffix: .html
+    jackson:
+        serialization.indent_output: true
+    datasource:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:postgresql://127.0.0.1/pangu_engine_dev
+        username: pangu
+        password: liqiulin
+        driver-class-name: org.postgresql.Driver
+    h2:
+        console:
+            enabled: true
+            path: /h2-console
+
+pangu:
+    http:
+        version: V_1_1 # To use HTTP/2 you will need SSL support (see above the "server.ssl" configuration)
+    cache: # Cache configuration
+        hazelcast: # Hazelcast distributed cache
+            time-to-live-seconds: 3600
+            backup-count: 1
+    # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
+    cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+        allowed-headers: "*"
+        allow-credentials: true
+        max-age: 1800
+    security:
+        authentication:
+            jwt:
+                secret: my-secret-token-to-change-in-production
+                # Token is valid 24 hours
+                token-validity-in-seconds: 86400
+                token-validity-in-seconds-for-remember-me: 2592000
+        remember-me:
+            # security key (this key should be unique for your application, and kept secret)
+            key: c643465925a7875a3a886865a89a1620c569aa56
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: pangu@localhost
+        base-url: http://localhost:8080
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: jhipster
+        prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
+            enabled: false
+            endpoint: /prometheusMetrics
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            report-frequency: 60 # in seconds
+
+
+mybatis:
+    type-aliases-package:  org.pf9.pangu.engine.**.entity
+    mapper-locations:
+        - classpath:/mapper/admin/*Mapper.xml
+        - classpath:/mapper/example/*Mapper.xml
+        - classpath:/mapper/cs/*Mapper.xml
+
+mapper:
+    mappers:
+        - org.pf9.pangu.boilerplate.util.MapperBase
+    not-empty: false
+    identity: PostgreSQL
+
+pagehelper:
+    helperDialect: postgresql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+    offsetAsPageNum: true
+    pageSizeZero: true

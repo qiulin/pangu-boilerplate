@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.pf9.pangu.boilerplate.mapper.AuthorityMapper">
+
+
+    <select id="findAuthoritiesByUserId" parameterType="Long"
+            resultType="org.pf9.pangu.boilerplate.entity.Authority">
+
+        SELECT DISTINCT
+        a.code,
+        a.name,
+        a.description
+        FROM
+        he_adm_authority a
+        INNER JOIN he_adm_role_authority_assoc raa ON raa.a_code = a.code
+        WHERE r_code IN (
+        SELECT
+        r.role_code
+        FROM
+        he_adm_user u
+        INNER JOIN he_adm_user_role_assoc r ON u."id" = r.user_id
+        WHERE
+        u.id = #{uid}
+        )
+    </select>
+
+    <insert id="addAuthority" parameterType="org.pf9.pangu.boilerplate.entity.Authority">
+        INSERT INTO he_adm_authority VALUES (#{code}, #{name}, #{description},#{url})
+    </insert>
+
+
+</mapper>

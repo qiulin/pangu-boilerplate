@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.pf9.pangu.boilerplate.mapper.MenuMapper">
+
+    <update id="updateMenuById" parameterType="org.pf9.pangu.boilerplate.entity.Menu">
+        UPDATE he_adm_menu
+        <set>
+            created_date = #{createdDate},
+            last_modified_by = #{lastModifiedBy},
+            last_modified_date = #{lastModifiedDate},
+            sort_no = #{sortNo},
+            parent_id = #{parentId},
+            tree_path = #{treePath},
+            tree_level = #{treeLevel},
+            label = #{label},
+            code = #{code},
+            icon_cls = #{iconCls},
+            href = #{href},
+            parameters = #{parameters},
+            description = #{description},
+            disabled = #{disabled},
+        </set>
+        <where>AND id = #{id,javaType=java.lang.Long}</where>
+    </update>
+
+    <select id="getAllMenuByRole" parameterType="String"
+            resultMap="menuDTOMap">
+        SELECT
+            b.*,
+            TRUE AS checked
+        FROM he_adm_role_menu_assoc a
+            INNER JOIN he_adm_menu b ON a.menu_id = b.id
+        WHERE a.role_code = #{roleCode}
+
+        UNION
+
+        SELECT
+            c.*,
+            FALSE AS checked
+        FROM he_adm_menu c
+        WHERE NOT EXISTS(
+              SELECT *
+                  FROM he_adm_role_menu_assoc d
+              WHERE d.menu_id = c.id
+                  AND d.role_code = #{roleCode})
+    </select>
+
+
+    <select id="getAllMenusByRole" parameterType="String"
+            resultMap="menuMap">
+        SELECT
+        b.*
+        FROM he_adm_role_menu_assoc a
+        INNER JOIN he_adm_menu b ON a.menu_id = b.id
+        WHERE a.role_code = #{roleCode}
+
+
+    </select>
+
+    <resultMap id="menuDTOMap" type="org.pf9.pangu.boilerplate.service.dto.MenuDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="icon_cls" property="iconCls" jdbcType="VARCHAR"/>
+        <result column="href" property="href" jdbcType="VARCHAR"/>
+        <result column="parameters" property="parameters" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="disabled" property="disabled" jdbcType="BIT"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
+        <result column="tree_path" property="treePath" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" jdbcType="INTEGER"/>
+
+        <result column="checked" property="checked" jdbcType="BIT"/>
+    </resultMap>
+    <resultMap id="menuMap" type="org.pf9.pangu.boilerplate.entity.Menu">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="icon_cls" property="iconCls" jdbcType="VARCHAR"/>
+        <result column="href" property="href" jdbcType="VARCHAR"/>
+        <result column="parameters" property="parameters" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="disabled" property="disabled" jdbcType="BIT"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
+        <result column="tree_path" property="treePath" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" jdbcType="INTEGER"/>
+    </resultMap>
+
+</mapper>
