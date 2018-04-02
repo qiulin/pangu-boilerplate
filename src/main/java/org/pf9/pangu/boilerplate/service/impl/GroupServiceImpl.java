@@ -1,8 +1,9 @@
 package org.pf9.pangu.boilerplate.service.impl;
 
-import org.pf9.pangu.boilerplate.entity.*;
+import org.pf9.pangu.boilerplate.entity.Group;
+import org.pf9.pangu.boilerplate.entity.User;
+import org.pf9.pangu.boilerplate.entity.UserGroupAssoc;
 import org.pf9.pangu.boilerplate.mapper.DictionaryItemMapper;
-import org.pf9.pangu.boilerplate.mapper.GroupDictionaryItemAssocMapper;
 import org.pf9.pangu.boilerplate.mapper.GroupMapper;
 import org.pf9.pangu.boilerplate.mapper.UserGroupAssocMapper;
 import org.pf9.pangu.boilerplate.seq.GroupSeq;
@@ -35,14 +36,6 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
     private DictionaryItemMapper dictionaryItemMapper;
 
     @Autowired
-    private GroupDictionaryItemAssocMapper groupDictionaryItemAssocMapper;
-
-
-//    @Autowired
-//    @Qualifier("pgSequenceGenerator")
-//    private SequenceGenerator sequenceGenerator;
-
-    @Autowired
     private GroupSeq groupSeq;
 
     private Logger logger = LoggerFactory.getLogger(GroupServiceImpl.class);
@@ -50,7 +43,6 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
 
     @PostConstruct
     protected void init() {
-        logger.debug("Group BaseMapper is " + groupMapper.toString());
         super.setBaseMapper(groupMapper);
     }
 
@@ -58,13 +50,13 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
     @Transactional
     @Override
     public Group saveOrUpdateGroup(Group group) {
-        if(group.getId()!=null){
-            if(group.getParentId()==null){
+        if (group.getId() != null) {
+            if (group.getParentId() == null) {
                 group.setParentId(0l);
             }
             EntityUtils.setModifiedAudit(group);
             groupMapper.updateByPrimaryKeySelective(group);
-        }else{
+        } else {
             group.setId(groupSeq.nextValue());
             EntityUtils.setCreatedAudit(group);
             group.setDeleted(false);
@@ -76,12 +68,6 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
         }
         return group;
     }
-
-    @Override
-    public List<DictionaryItem> getProductByGroup(String groupCode) {
-        return groupDictionaryItemAssocMapper.getProductByGroup(groupCode);
-    }
-
 
 
     @Override
@@ -107,59 +93,6 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
         }
     }
 
-    @Override
-    @Transactional
-    public int assignProductToGroup(List<GroupDictionaryItemAssoc> assocs) {
-        try {
-            Condition condition = new Condition(GroupDictionaryItemAssoc.class);
-            condition.createCriteria().andEqualTo("groupCode", assocs.get(0).getGroupCode());
-            groupDictionaryItemAssocMapper.deleteByCondition(condition);
-            for (GroupDictionaryItemAssoc assoc : assocs) {
-                assoc.setId(groupSeq.nextValue());
-                groupDictionaryItemAssocMapper.insert(assoc);
-            }
-            return 1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    @Transactional
-    @Override
-    public List<DictionaryItem> getAllProduct(){
-        Condition condition = new Condition(DictionaryItem.class);
-        condition.createCriteria().andEqualTo("dicId",1);
-        return dictionaryItemMapper.selectByCondition(condition);
-    }
-
-    @Transactional
-    @Override
-    public int setDsiabledOrNot(String code){
-        Condition condition = new Condition(Group.class);
-        condition.createCriteria().andEqualTo("code",code);
-        Group group = groupMapper.selectByCondition(condition).get(0);
-        if(group.isDisabled()){
-            group.setDisabled(false);
-        }else{
-            group.setDisabled(true);
-        }
-        return groupMapper.updateByPrimaryKeySelective(group);
-    }
-
-    @Transactional
-    @Override
-    public int setDeletedOrNot(String code){
-        Condition condition = new Condition(Group.class);
-        condition.createCriteria().andEqualTo("code",code);
-        Group group = groupMapper.selectByCondition(condition).get(0);
-        if(group.isDeleted()){
-            group.setDeleted(false);
-        }else{
-            group.setDeleted(true);
-        }
-        return groupMapper.updateByPrimaryKeySelective(group);
-    }
 
     public Group getGroupById(long id) {
         return groupMapper.selectByPrimaryKey(id);
@@ -184,8 +117,8 @@ public class GroupServiceImpl extends AbstractEntityService<Group, GroupMapper> 
 
     List<Group> getAllGroup() {
         Condition condition = new Condition(Group.class);
-        condition.createCriteria().andEqualTo("isDisabled",false)
-                .andEqualTo("isDeleted",false);
+        condition.createCriteria().andEqualTo("isDisabled", false)
+                .andEqualTo("isDeleted", false);
 
         List<Group> groups = groupMapper.selectByCondition(condition);
 

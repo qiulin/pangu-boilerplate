@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class DictionarySeq extends PgSequenceGenerator {
 
     public DictionarySeq() {
-        this.setSequence("he_adm_dictionary_seq");
+        this.setSequence("pg_adm_dictionary_id_seq");
     }
 }

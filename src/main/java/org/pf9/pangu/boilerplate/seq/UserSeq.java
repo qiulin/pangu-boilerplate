@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class UserSeq extends PgSequenceGenerator {
 
     public UserSeq() {
-        this.setSequence("he_adm_user_id_seq");
+        this.setSequence("pg_adm_user_id_seq");
     }
 }

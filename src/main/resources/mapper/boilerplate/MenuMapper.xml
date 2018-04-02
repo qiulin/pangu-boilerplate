@@ -4,7 +4,7 @@
 <mapper namespace="org.pf9.pangu.boilerplate.mapper.MenuMapper">
 
     <update id="updateMenuById" parameterType="org.pf9.pangu.boilerplate.entity.Menu">
-        UPDATE he_adm_menu
+        UPDATE pg_adm_menu
         <set>
             created_date = #{createdDate},
             last_modified_by = #{lastModifiedBy},
@@ -29,8 +29,8 @@
         SELECT
             b.*,
             TRUE AS checked
-        FROM he_adm_role_menu_assoc a
-            INNER JOIN he_adm_menu b ON a.menu_id = b.id
+        FROM pg_adm_role_menu_assoc a
+            INNER JOIN pg_adm_menu b ON a.menu_id = b.id
         WHERE a.role_code = #{roleCode}
 
         UNION
@@ -38,10 +38,10 @@
         SELECT
             c.*,
             FALSE AS checked
-        FROM he_adm_menu c
+        FROM pg_adm_menu c
         WHERE NOT EXISTS(
               SELECT *
-                  FROM he_adm_role_menu_assoc d
+                  FROM pg_adm_role_menu_assoc d
               WHERE d.menu_id = c.id
                   AND d.role_code = #{roleCode})
     </select>
@@ -51,8 +51,8 @@
             resultMap="menuMap">
         SELECT
         b.*
-        FROM he_adm_role_menu_assoc a
-        INNER JOIN he_adm_menu b ON a.menu_id = b.id
+        FROM pg_adm_role_menu_assoc a
+        INNER JOIN pg_adm_menu b ON a.menu_id = b.id
         WHERE a.role_code = #{roleCode}
 
 

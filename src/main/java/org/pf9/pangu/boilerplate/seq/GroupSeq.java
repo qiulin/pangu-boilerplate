@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class GroupSeq extends PgSequenceGenerator{
     public GroupSeq() {
-        this.setSequence("he_adm_group_seq");
+        this.setSequence("pg_adm_group_id_seq");
     }
 }

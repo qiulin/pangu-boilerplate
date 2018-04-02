@@ -5,8 +5,8 @@
 
     <select id="getRoleListByUser" parameterType="Long" resultMap="roleMap">
         SELECT r.*
-        FROM he_adm_user_role_assoc ac
-            INNER JOIN he_adm_role r ON r.code = ac.role_code
+        FROM pg_adm_user_role_assoc ac
+            INNER JOIN pg_adm_role r ON r.code = ac.role_code
         WHERE ac.user_id = #{userId}
     </select>
 

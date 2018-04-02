@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class RoleMenuAssocSeq extends PgSequenceGenerator {
 
     public RoleMenuAssocSeq() {
-        this.setSequence("he_adm_role_menu_assoc_id_seq");
+        this.setSequence("pg_adm_role_menu_assoc_id_seq");
     }
 }

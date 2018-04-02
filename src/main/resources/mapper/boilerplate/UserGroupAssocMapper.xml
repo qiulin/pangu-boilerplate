@@ -8,7 +8,7 @@
         SELECT
 	        A.*
         FROM
-	      he_adm_user A INNER JOIN he_adm_user_group_assoc b ON A.ID = b.uid
+	      pg_adm_user A INNER JOIN pg_adm_user_group_assoc b ON A.ID = b.uid
 	      AND g_code = #{groupCode}
     </select>
 

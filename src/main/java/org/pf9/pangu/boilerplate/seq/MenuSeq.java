@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class MenuSeq extends PgSequenceGenerator {
 
     public MenuSeq() {
-        this.setSequence("he_adm_menu_id_seq");
+        this.setSequence("pg_adm_menu_id_seq");
     }
 }

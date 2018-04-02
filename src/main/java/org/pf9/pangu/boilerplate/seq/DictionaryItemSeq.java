@@ -8,6 +8,6 @@ public class DictionaryItemSeq extends PgSequenceGenerator {
 
     public DictionaryItemSeq() {
 
-        this.setSequence("he_adm_dictionary_item_seq");
+        this.setSequence("pg_adm_dictionary_item_id_seq");
     }
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class RoleSeq extends PgSequenceGenerator {
 
     public RoleSeq() {
-        this.setSequence("he_adm_role_id_seq");
+        this.setSequence("pg_adm_role_id_seq");
     }
 }

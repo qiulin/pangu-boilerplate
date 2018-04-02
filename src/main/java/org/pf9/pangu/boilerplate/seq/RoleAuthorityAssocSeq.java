@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class RoleAuthorityAssocSeq extends PgSequenceGenerator {
 
     public RoleAuthorityAssocSeq() {
-        this.setSequence("he_adm_role_authority_assoc_seq");
+        this.setSequence("pg_adm_role_authority_assoc_id_seq");
     }
 }

@@ -26,28 +26,20 @@
     SELECT
 	  A.*
     FROM
-	he_adm_user
-	    A LEFT JOIN he_adm_user_role_assoc b ON A.ID = b.user_id
+	pg_adm_user
+	    A LEFT JOIN pg_adm_user_role_assoc b ON A.ID = b.user_id
     WHERE
 	    b.role_code = #{roleCode}
     </select>
 
-    <sql id="select">
-        SELECT t.*
-        FROM he_adm_user t
-    </sql>
-    <select id="findAllUsers" resultMap="userMap">
-        <include refid="select"></include>
-    </select>
-
     <select id="findUserByLogin" parameterType="String" resultMap="userMap">
         SELECT t.*
-        FROM he_adm_user t
+        FROM pg_adm_user t
         WHERE t.login = #{login}
     </select>
 
     <delete id="deleteUserById" parameterType="long">
-        DELETE FROM he_adm_user
+        DELETE FROM pg_adm_user
         WHERE id = #{id}
 
     </delete>
